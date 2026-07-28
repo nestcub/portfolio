@@ -30,7 +30,7 @@ export async function createPost(formData: FormData) {
   });
 
   revalidatePath('/admin/posts');
-  revalidatePath('/blog');
+  revalidatePath('/post');
   redirect('/admin/posts');
 }
 
@@ -52,8 +52,8 @@ export async function updatePost(id: number, formData: FormData) {
     .where(eq(posts.id, id));
 
   revalidatePath('/admin/posts');
-  revalidatePath('/blog');
-  revalidatePath(`/blog/${current.slug}`);
+  revalidatePath('/post');
+  revalidatePath(`/post/${current.slug}`);
   redirect('/admin/posts');
 }
 
@@ -64,6 +64,6 @@ export async function deletePost(id: number) {
   await db.delete(posts).where(eq(posts.id, id));
 
   revalidatePath('/admin/posts');
-  revalidatePath('/blog');
-  revalidatePath(`/blog/${post.slug}`);
+  revalidatePath('/post');
+  revalidatePath(`/post/${post.slug}`);
 }

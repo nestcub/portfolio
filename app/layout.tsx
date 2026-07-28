@@ -22,8 +22,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans bg-black text-white min-h-screen relative`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <main className="pb-20">{children}</main>
           <Navbar />
+          <main className="pt-16">{children}</main>
         </ThemeProvider>
       </body>
     </html>

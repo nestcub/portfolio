@@ -1,72 +1,55 @@
-export const dynamic = 'force-dynamic';
+import { allArticles } from "contentlayer/generated";
+import { useMDXComponent } from "next-contentlayer2/hooks";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
 
-import { db } from '@/app/db';
-import { posts } from '@/app/db/schema';
-import { and, eq } from 'drizzle-orm';
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const [post] = await db
-    .select({ title: posts.title, excerpt: posts.excerpt })
-    .from(posts)
-    .where(and(eq(posts.slug, slug), eq(posts.status, 'published')));
-
-  if (!post) return {};
-  return { title: post.title, description: post.excerpt ?? undefined };
+export function generateStaticParams() {
+  return allArticles.filter((article) => article.published).map((article) => ({ slug: article.slug }));
 }
 
-function readingTime(content: string) {
-  return Math.max(1, Math.round(content.trim().split(/\s+/).length / 200));
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const article = allArticles.find((a) => a.slug === params.slug && a.published);
+  if (!article) return {};
+  return { title: article.title, description: article.description };
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const [post] = await db
-    .select()
-    .from(posts)
-    .where(and(eq(posts.slug, slug), eq(posts.status, 'published')));
+function MDXContent({ code }: { code: string }) {
+  const Component = useMDXComponent(code);
+  return <Component />;
+}
 
-  if (!post) notFound();
+export default function ArticlePage({ params }: { params: { slug: string } }) {
+  const article = allArticles.find((a) => a.slug === params.slug && a.published);
+
+  if (!article) notFound();
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-16 pb-24">
-      <Link href="/blog" className="text-white/40 text-sm hover:text-white mb-8 inline-block">
-        ← Blog
-      </Link>
+    <div className="max-w-4xl mx-auto px-6 md:px-10 py-16 pb-24">
+      <div className="max-w-2xl">
+        <Link href="/blog" className="text-white/40 text-sm hover:text-white mb-8 inline-block">
+          ← Blog
+        </Link>
 
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
+        <header className="mb-10">
+          <h1 className="text-3xl font-bold leading-tight">{article.title}</h1>
 
-        <div className="flex items-center gap-2 mt-3 text-sm text-white/30">
-          {post.publishedAt && (
-            <time dateTime={post.publishedAt.toISOString()}>
-              {post.publishedAt.toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
+          <div className="flex items-center gap-2 mt-3 text-sm text-white/30">
+            <time dateTime={article.date}>
+              {new Date(article.date).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
               })}
             </time>
-          )}
-          <span>·</span>
-          <span>{readingTime(post.content)} min read</span>
-        </div>
-      </header>
+            <span>·</span>
+            <span>{article.readingTime} min read</span>
+          </div>
+        </header>
 
-      <div className="prose prose-invert prose-sm max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+        <div className="prose prose-invert prose-sm max-w-none">
+          <MDXContent code={article.body.code} />
+        </div>
       </div>
     </div>
   );

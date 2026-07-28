@@ -30,7 +30,7 @@ export default async function EditPostPage({
         <h1 className="text-2xl font-bold">Edit post</h1>
         {post.status === 'published' && (
           <Link
-            href={`/blog/${post.slug}`}
+            href={`/post/${post.slug}`}
             target="_blank"
             className="text-sm text-white/40 hover:text-white ml-auto"
           >
