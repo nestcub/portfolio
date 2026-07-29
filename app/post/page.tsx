@@ -23,9 +23,11 @@ export default async function PostPage() {
     .orderBy(desc(posts.publishedAt));
 
   return (
-    <div className="max-w-4xl mx-auto px-6 md:px-10 py-16 pb-24">
+    <div className="max-w-4xl mx-auto px-6 md:px-10 py-4 pb-16">
+      <p className="text-sm py-8 text-muted-foreground">db backed route built with drizzle + neon - uses nextjs server actions</p>
+
       <div className="max-w-2xl">
-        <h1 className="text-3xl font-bold mb-10">Post</h1>
+        {/* <h1 className="text-3xl font-bold mb-10">Post</h1> */}
 
         {allPosts.length === 0 ? (
           <p className="text-white/40">Nothing published yet.</p>

@@ -12,7 +12,8 @@ export default function BlogPage() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="max-w-4xl mx-auto px-6 md:px-10 py-16 pb-24">
+    <div className="max-w-4xl mx-auto px-6 md:px-10 py-8 pb-8">
+      <p className="text-sm text-muted-foreground mb-16">rendered .mdx files for content using next-contentlayer2</p>
       <div className="max-w-2xl">
         <h1 className="text-3xl font-bold mb-10">Blog</h1>
 

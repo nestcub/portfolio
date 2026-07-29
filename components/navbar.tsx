@@ -10,7 +10,9 @@ export default function Navbar() {
   const routes = [
     { name: "Know me", path: "/" },
     // { name: "Photos", path: "/photos" },
-    { name: "Post", path: "/post" },
+    { name: "Blog", path: "/blog" },
+    { name: "Projects", path: "/projects" },
+    { name: "Posts", path: "/post" },
   ]
 
   return (
