@@ -20,8 +20,8 @@ No test suite is configured. TypeScript and ESLint errors are intentionally igno
 Next.js 15 App Router portfolio site with a dark-only theme (black background, `text-white`, `border-white/10` accents throughout). There is no light mode — `ThemeProvider` is locked to `defaultTheme="dark"` with `enableSystem={false}`.
 
 **Routes (under `app/`):**
-- `/` — Home/intro page (`app/page.tsx`) — static, no data fetching
-- `/projects` — Client component with a hardcoded projects array; opens a `<Dialog>` on click
+- `/` — Know me page (`app/page.tsx`) — static server component; all copy comes from `data/about.ts`. Sections in order: contact links ("Get in touch", incl. resume Google Drive link), intro heading, photo carousel, experience, how I work, stack, education
+- `/projects` — Server component rendering `WEB_APPS` and `MOBILE_APPS` from `data/projects.ts` via `components/animated-projects-list.tsx`
 - `/blog` — Public blog listing; shows only published posts ordered by `published_at` desc
 - `/blog/[slug]` — Public post page; renders Markdown via `react-markdown` + `remark-gfm` with `prose-invert` typography
 - `/admin/login` — Password form; validates against `ADMIN_SECRET` env var, sets a 7-day httpOnly cookie
@@ -33,7 +33,16 @@ Next.js 15 App Router portfolio site with a dark-only theme (black background, `
 shadcn/ui components (full suite installed). Use `cn()` from `lib/utils.ts` (clsx + tailwind-merge) for conditional class names. `hooks/use-mobile.tsx` and `hooks/use-toast.ts` are consumed internally by shadcn/ui's `sidebar.tsx` and `toaster.tsx`.
 
 **Layout:**
-`app/layout.tsx` wraps everything in `ThemeProvider` and renders `<Navbar />` as a fixed bottom bar. Active navbar routes: Know me (`/`), Projects (`/projects`), Blog (`/blog`). A Photos route exists but is commented out.
+`app/layout.tsx` wraps everything in `ThemeProvider` and renders `<Navbar />` as a fixed top bar. Active navbar routes: Know me (`/`), Blog (`/blog`), Projects (`/projects`), Posts (`/post`). A Photos route exists but is commented out.
+
+**Content data (`data/`):**
+Page copy lives in typed TS arrays, not the DB — edit these instead of the page components.
+- `data/about.ts` — Know me content: `INTRO`, `PHOTOS`, `EXPERIENCE`, `PRINCIPLES`, `SKILLS`, `EDUCATION`, `CONTACT_LINKS`. Contact links with an empty `href` are not rendered (LinkedIn is currently empty).
+- `data/projects.ts` — `WEB_APPS` and `MOBILE_APPS` (`WebApp` type). `repo`/`demo` links are optional and only rendered when set.
+- Don't name legal-firm clients in Know me copy — refer to them generically ("legal firms").
+
+**Images:**
+Know me carousel photos live in `public/Images/` and are rendered with `next/image` (`fill`, `object-cover`, 3:4 frame) inside shadcn `Carousel`. `next.config.mjs` sets `images.unoptimized: true`, so files are served as-is — resize/compress before adding, and strip EXIF GPS data from phone photos.
 
 **Styling:**
 Tailwind CSS v3 with CSS variable-based color tokens (defined in `app/globals.css`). `Inter` is the only font, loaded via `next/font/google` as `--font-sans`. `@tailwindcss/typography` is installed — use `prose prose-invert` for Markdown-rendered content.

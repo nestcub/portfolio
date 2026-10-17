@@ -53,34 +53,30 @@ export const WEB_APPS: WebApp[] = [
   //   ],
   //   thumbnail: "/_static/projects/hrms.png",
   // },
-  // {
-  //   title: "AI Calls Dashboard",
-  //   repo: "https://github.com/<your-username>/ai-calls-dashboard",
-  //   demo: "https://calls.yourdomain.com",
-  //   description:
-  //     "An AI-powered dashboard that transcribes customer call recordings using Whisper and generates structured summaries, reducing manual review effort.",
-  //   tags: [
-  //     "Next.js",
-  //     "Django REST Framework",
-  //     "Celery",
-  //     "RabbitMQ",
-  //     "Whisper",
-  //     "LLM",
-  //   ],
-  //   thumbnail: "/_static/projects/ai-calls-dashboard.png",
-  // },
-  // {
-  //   title: "SynTrack",
-  //   repo: "https://github.com/<your-username>/syntrack",
-  //   demo: "https://syntrack.yourdomain.com",
-  //   description:
-  //     "Geo-location based attendance application for tracking employee check-ins and attendance through a React Native mobile app.",
-  //   tags: [
-  //     "React Native Expo",
-  //     "Supabase",
-  //     "Geolocation",
-  //     "Mobile",
-  //   ],
-  //   thumbnail: "/_static/projects/syntrack.png",
-  // },
+  {
+    title: "AI Call Transcription & Analytics Dashboard",
+    description:
+      "A full-stack dashboard that transcribes customer call recordings with Whisper and surfaces call analytics, cutting manual review from a full team to a single reviewer.",
+    tags: [
+      "Next.js",
+      "Django REST Framework",
+      "Celery",
+      "RabbitMQ",
+      "Whisper",
+      "LLM",
+    ],
+  },
+] as const;
+
+export const MOBILE_APPS: WebApp[] = [
+  {
+    title: "SynTrack",
+    description:
+      "Geo-location based attendance app for a client that needed attendance tracking and analytics for on-field workers.",
+    tags: [
+      "React Native Expo",
+      "Supabase",
+      "Geolocation",
+    ],
+  },
 ] as const;
